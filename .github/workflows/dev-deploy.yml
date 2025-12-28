@@ -1,0 +1,32 @@
+name: Dev Deployment
+
+on:
+  push:
+    branches: [ "dev" ]
+
+jobs:
+  dev-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        cd app
+        pip install -r requirements.txt
+
+    - name: Run basic test
+      run: echo "Running DEV tests"
+
+    - name: Build Docker image
+      run: docker build -t myapp:dev ./app
+
+    - name: Deploy to DEV
+      run: echo "Deploying to DEV environment"
